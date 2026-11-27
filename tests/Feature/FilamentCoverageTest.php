@@ -13,14 +13,16 @@ use Liberu\Accounting\ReceiptManagementFilament\Resources\ReceiptResource;
 
 it('registers and configures accounting-receipt-management-filament filament resources', function (): void {
     $provider = $this->app->register(ReceiptManagementFilamentServiceProvider::class, force: true);
-    if (method_exists($provider, 'boot')) { $provider->boot(); }
+    if (method_exists($provider, 'boot')) {
+        $provider->boot();
+    }
     expect($provider)->toBeInstanceOf(ReceiptManagementFilamentServiceProvider::class);
     $plugin = ReceiptManagementFilamentPlugin::make();
     $panel = Panel::make()->id('test-accounting-receipt-management-filament');
     $plugin->register($panel);
     $plugin->boot($panel);
     expect($plugin->getId())->toBeString()->not->toBeEmpty();
-    $host = new ListReceipts;
+    $host = new ListReceipts();
     expect(ReceiptResource::getPages())->toBeArray();
     expect(ReceiptResource::getEloquentQuery())->toBeInstanceOf(Builder::class);
     expect(ReceiptResource::form(Schema::make($host)))->toBeInstanceOf(Schema::class);
